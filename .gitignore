@@ -10,6 +10,7 @@ project/plugins/project/
 .DS_Store
 .idea/
 .bsp/
+.gradle
 out
 
 ### Scala ###
