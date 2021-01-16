@@ -1,32 +1,26 @@
 package ua.edu.ucu.integrations
 
 import akka.NotUsed
-import akka.stream.scaladsl.{Broadcast, Concat, Flow, Merge, MergeSequence, RunnableGraph, Sink, Source, ZipWith}
-import akka.http.scaladsl.model.{HttpRequest, Uri}
-import akka.stream.{ClosedShape, SourceShape}
-import akka.stream.scaladsl.GraphDSL.Implicits.{SourceArrow, fanOut2flow, port2flow}
-
-import scala.concurrent.duration.DurationInt
-import spray.json._
 import akka.actor.ActorSystem
-import akka.stream.scaladsl.Source
-import akka.stream.scaladsl.GraphDSL
-import akka.stream.scaladsl.Zip
-import ua.edu.ucu.dto.YahooStockJsonProtocol._
 import akka.http.scaladsl.Http
+import akka.http.scaladsl.model.{HttpRequest, Uri}
 import akka.http.scaladsl.unmarshalling.Unmarshal
+import akka.stream.ClosedShape
+import akka.stream.scaladsl.GraphDSL.Implicits.{SourceArrow, fanOut2flow, port2flow}
+import akka.stream.scaladsl.{Broadcast, Flow, GraphDSL, RunnableGraph, Sink, Source, Zip}
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
+import spray.json._
 import ua.edu.ucu.dto.Root
+import ua.edu.ucu.dto.YahooStockJsonProtocol._
+
+import scala.concurrent.duration.DurationInt
 
 object StockPricesStreamSource {
 
   def main(args: Array[String]): Unit = {
-
-
     implicit val system = ActorSystem()
     implicit val dispatcher = system.dispatcher
-
 
     def runRequest(req: HttpRequest) = {
       Http()
@@ -34,7 +28,6 @@ object StockPricesStreamSource {
         Unmarshal(response.entity).to[String]
       }
     }
-
 
     def checkIfTrendChanged(listOfPrices: Seq[Double]): Boolean = {
       if (listOfPrices(0) > listOfPrices(1) && listOfPrices(1) > listOfPrices(2) && listOfPrices(2) < listOfPrices(4)) true
@@ -78,7 +71,4 @@ object StockPricesStreamSource {
       .foreach(runPipeline2)
 
   }
-
-
-
 }

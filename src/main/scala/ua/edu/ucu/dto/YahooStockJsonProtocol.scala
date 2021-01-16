@@ -27,10 +27,10 @@ case class Quote(close: Seq[Double]) {
 case class Meta(symbol: String)
 
 object YahooStockJsonProtocol extends DefaultJsonProtocol {
-  implicit val  quoteFormat= jsonFormat1(Quote)
-  implicit val  indicatorsFormat= jsonFormat1(Indicators)
-  implicit val  metaFormat= jsonFormat1(Meta)
-  implicit val  resultFormat= jsonFormat1(Result)
+  implicit val quoteFormat = jsonFormat1(Quote)
+  implicit val indicatorsFormat = jsonFormat1(Indicators)
+  implicit val metaFormat = jsonFormat1(Meta)
+  implicit val resultFormat = jsonFormat1(Result)
   implicit val chartFormat = jsonFormat1(Chart)
   implicit val rootFormat = jsonFormat1(Root)
 
