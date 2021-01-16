@@ -92,7 +92,7 @@ object StockPricesStreamSource {
     })
 
     val serverSource: Source[Http.IncomingConnection, Future[Http.ServerBinding]] =
-      Http().newServerAt("localhost", 8080).connectionSource()
+      Http().newServerAt("0.0.0.0", 1234).connectionSource()
 
     serverSource.runForeach { connection => // foreach materializes the source
       println("Accepted new connection from " + connection.remoteAddress)
