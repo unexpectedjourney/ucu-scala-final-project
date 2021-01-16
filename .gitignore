@@ -12,6 +12,7 @@ project/plugins/project/
 .bsp/
 .gradle
 out
+.env
 
 ### Scala ###
 *.class
