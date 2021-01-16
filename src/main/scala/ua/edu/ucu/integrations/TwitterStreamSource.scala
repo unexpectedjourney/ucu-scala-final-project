@@ -12,14 +12,12 @@ import scala.concurrent.{ExecutionContext, Future}
 object TwitterStreamSource {
   def apply(searchQuery: String, config: Configuration): Source[Tweet, Future[NotUsed]] = {
     Source.fromMaterializer((mat, a) => {
-      println(s"Here $mat")
       implicit val context: ExecutionContext.parasitic.type = ExecutionContext.parasitic
       val (queue, source) = Source.queue[Tweet](256, OverflowStrategy.dropHead).preMaterialize()(mat)
-      val twitterStream = new TwitterStreamFactory(config).getInstance()
+      val twitterStream: TwitterStream = new TwitterStreamFactory(config).getInstance()
 
       queue.watchCompletion()
         .onComplete(_ =>{
-          println("here")
           twitterStream.cleanUp
           twitterStream.shutdown
         })

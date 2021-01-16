@@ -12,7 +12,6 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-serialization-jackson" % "2.6.10",
   "com.typesafe.akka" %% "akka-http-spray-json" % "10.2.2",
 
-
   "org.twitter4j" % "twitter4j-core" % "4.0.5",
   "org.twitter4j" % "twitter4j-stream" % "4.0.5",
 )

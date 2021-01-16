@@ -3,22 +3,15 @@ package ua.edu.ucu.stages
 import akka.NotUsed
 import akka.stream.alpakka.mongodb.scaladsl.MongoSink
 import akka.stream.scaladsl.{Flow, Sink}
-import com.mongodb.reactivestreams.client.{MongoClients, MongoCollection}
+import com.mongodb.reactivestreams.client.MongoCollection
 import org.bson.Document
 import ua.edu.ucu.dto.Tweet
-import ua.edu.ucu.utils.Configuration
+import ua.edu.ucu.utils.Connection
 
 object MongoDBSink {
   val dbName = "final_project"
   val collectionName = "tweets"
-
-  val config = new Configuration()
-  val login: String = config.mongoInitdbRootUsername
-  val password: String = config.mongoInitdbRootPassword
-  val collection: MongoCollection[Document] = MongoClients
-    .create(s"mongodb://$login:$password@mongodb:27017")
-    .getDatabase(dbName)
-    .getCollection(collectionName)
+  val collection: MongoCollection[Document] = new Connection().getMongoConnection(dbName, collectionName)
 
   def apply(): Sink[Tweet, NotUsed] = {
     Flow[Tweet]
