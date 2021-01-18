@@ -14,6 +14,8 @@ libraryDependencies ++= Seq(
 
   "org.twitter4j" % "twitter4j-core" % "4.0.5",
   "org.twitter4j" % "twitter4j-stream" % "4.0.5",
+
+  "org.mongodb.scala" %% "mongo-scala-driver" % "2.9.0",
 )
 
 assemblyMergeStrategy in assembly := {

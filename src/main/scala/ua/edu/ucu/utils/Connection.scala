@@ -2,6 +2,7 @@ package ua.edu.ucu.utils
 
 import com.mongodb.reactivestreams.client.{MongoClients, MongoCollection}
 import org.bson.Document
+import org.bson.codecs.configuration.CodecRegistry
 
 class Connection {
   def getMongoConnection(dbName: String, collectionName: String) = {
@@ -14,5 +15,14 @@ class Connection {
       .getCollection(collectionName)
 
     collection
+  }
+
+  private val client = MongoClients.create(scala.util.Properties.envOrElse("MONGO_CONNECTION_STRING", "mongodb://localhost:27017"))
+  private val db = client.getDatabase(scala.util.Properties.envOrElse("MONGO_DATABASE_NAME", "fp"))
+
+  def getCollection(collection: String, codecRegistry: CodecRegistry) = {
+    db
+      .getCollection(collection)
+      .withCodecRegistry(codecRegistry)
   }
 }
