@@ -3,30 +3,38 @@ package ua.edu.ucu.integrations
 import akka.NotUsed
 import akka.stream.OverflowStrategy
 import akka.stream.scaladsl.Source
-import twitter4j.conf.Configuration
 import twitter4j._
-import ua.edu.ucu.dto.{Author, Tweet}
+import twitter4j.conf.Configuration
+import ua.edu.ucu.dto.{Author, Hashtag, Tweet}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 object TwitterStreamSource {
-  def apply(searchQuery: String, config: Configuration): Source[Tweet, Future[NotUsed]] = {
+  def apply(companies: Seq[String], config: Configuration): Source[Tweet, Future[NotUsed]] = {
     Source.fromMaterializer((mat, a) => {
       implicit val context: ExecutionContext.parasitic.type = ExecutionContext.parasitic
       val (queue, source) = Source.queue[Tweet](256, OverflowStrategy.dropHead).preMaterialize()(mat)
       val twitterStream: TwitterStream = new TwitterStreamFactory(config).getInstance()
 
       queue.watchCompletion()
-        .onComplete(_ =>{
+        .onComplete(_ => {
           twitterStream.cleanUp
           twitterStream.shutdown
         })
 
+      val companyFilters = new FilterQuery().track(companies:_*)
       val statusListener = new StatusListener() {
 
         override def onStatus(status: Status): Unit = {
-          queue.offer(Tweet(Author(status.getUser.getScreenName), status.getCreatedAt.getTime, status.getText))
-          println(status.getText)
+          companies.filter(hashtag => status.getText contains hashtag).foreach(
+            hashtag => {
+              queue.offer(
+              Tweet(
+                Author(status.getUser.getScreenName),
+                status.getCreatedAt.getTime,
+                status.getText,
+                Hashtag(hashtag)))}
+          )
         }
 
         override def onDeletionNotice(statusDeletionNotice: StatusDeletionNotice): Unit = {}
@@ -38,11 +46,10 @@ object TwitterStreamSource {
         override def onScrubGeo(userId: Long, upToStatusId: Long): Unit = {}
 
         override def onStallWarning(warning: StallWarning): Unit = {}
-
       }
       twitterStream.addListener(statusListener)
-      twitterStream.filter(searchQuery)
 
+      twitterStream.filter(companyFilters)
       source
     }).async
   }
