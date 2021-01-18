@@ -1,7 +1,7 @@
 FROM openjdk:alpine
 
-ENV FILEPATH="target/scala-2.13/ucu-scala-final-project-assembly-0.1.jar"
-ENV FILE="ucu-scala-final-project-assembly-0.1.jar"
+ENV FILEPATH="target/scala-2.13/mainApplication.jar"
+ENV FILE="mainApplication.jar"
 
 WORKDIR /usr/app
 ADD $FILEPATH /usr/app
