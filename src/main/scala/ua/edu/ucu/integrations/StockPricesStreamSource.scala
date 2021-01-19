@@ -22,17 +22,10 @@ import scala.util.Random
 
 object StockPricesStreamSource {
 
-  def main(args: Array[String]): Unit = {
+  def apply(companies: Seq[String]) = {
     implicit val system = ActorSystem()
     implicit val dispatcher = system.dispatcher
 
-
-    def checkIfTrendChanged(listOfPrices: Seq[Double]): Boolean = {
-      if (listOfPrices(0) > listOfPrices(1) && listOfPrices(1) > listOfPrices(2) && listOfPrices(2) < listOfPrices(4)) true
-      else if (listOfPrices(0) < listOfPrices(1) && listOfPrices(1) < listOfPrices(2) && listOfPrices(2) > listOfPrices(4)) true
-      else if (Random.between(0, 3) == 2) true
-      else false
-    }
 
     val mapper = new ObjectMapper()
     mapper.registerModule(DefaultScalaModule)
@@ -52,13 +45,14 @@ object StockPricesStreamSource {
 
     def combineSources(companies: Seq[String], n: Int, state: Source[String, NotUsed]): Source[String, NotUsed] = {
       if (n < 0) state
-      else combineSources(companies, n-1, Source.combine(makeSource(companies(n)), state)(Merge(_)))
+      else combineSources(companies, n - 1, Source.combine(makeSource(companies(n)), state)(Merge(_)))
     }
 
-    val companies = Seq("GOOGL", "TSLA", "MSFT")
+    combineSources(companies, companies.length - 1, Source.empty)
+  }
+}
 
-    val stockSource =  combineSources(companies, companies.length-1, Source.empty)
-
+    /*
     val graphSource = stockSource.via(GraphDSL.create() { implicit builder =>
 
       val in = builder.add(Broadcast[String](1))
@@ -91,6 +85,7 @@ object StockPricesStreamSource {
       FlowShape(in.in, out.out)
     })
 
+    /*
     val serverSource: Source[Http.IncomingConnection, Future[Http.ServerBinding]] =
       Http().newServerAt("0.0.0.0", 1234).connectionSource()
 
@@ -105,7 +100,8 @@ object StockPricesStreamSource {
       )
     }
 
-
+*/
 
   }
 }
+*/
