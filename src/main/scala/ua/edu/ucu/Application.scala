@@ -1,31 +1,25 @@
 package ua.edu.ucu
 
 
-import akka.http.scaladsl.server.Directives.{complete, concat, get, handleWebSocketMessages, path, pathPrefix}
-import ua.edu.ucu.utils.Configuration
-import spray.json._
-import ua.edu.ucu.dto.YahooStockJsonProtocol._
-import ua.edu.ucu.dto.Root
-import ua.edu.ucu.integrations.StockPricesStreamSource
-import ua.edu.ucu.dto.YahooStockJsonProtocol._
-
-import scala.concurrent.{ExecutionContextExecutor, Future}
-import akka.stream.scaladsl.{Broadcast, Flow, GraphDSL, Merge, Sink, Source, Zip}
-import akka.stream.FlowShape
-import akka.stream.scaladsl.GraphDSL.Implicits.{fanOut2flow, port2flow}
-import spray.json._
 import akka.actor.ActorSystem
-import akka.http.scaladsl.server.Directives.{get, path}
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.ws.TextMessage
-import akka.http.scaladsl.server.Directives.handleWebSocketMessages
-import akka.http.scaladsl.server.{Directives, Route}
+import akka.http.scaladsl.server.Directives
+import akka.http.scaladsl.server.Directives.{get, handleWebSocketMessages, pathPrefix, _}
+import akka.stream.FlowShape
+import akka.stream.scaladsl.GraphDSL.Implicits.{fanOut2flow, port2flow}
+import akka.stream.scaladsl.{Broadcast, Flow, GraphDSL, Merge, Sink, Source, Zip}
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
-import akka.http.scaladsl.server.Directives._
+import spray.json._
+import ua.edu.ucu.dto.Root
+import ua.edu.ucu.dto.YahooStockJsonProtocol._
+import ua.edu.ucu.integrations.StockPricesStreamSource
 import ua.edu.ucu.integrations.YahooFinance.YahooFinance.lookForTickers
+import ua.edu.ucu.utils.Configuration
+import ua.edu.ucu.utils.TwitterFilter.lookForTweets
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContextExecutor, Future}
 import scala.util.Random
 
 
@@ -52,10 +46,7 @@ object Application extends App {
 
   //////////////////////////// ADD YOUR FUNCTION HERE:
   def findTweets(symbol: String): String = {
-    //val keyword = dictionary(symbol)
-    //  ...
-    "Tweet 1"
-
+    lookForTweets(symbol)
   }
 
 

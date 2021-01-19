@@ -1,6 +1,5 @@
 package ua.edu.ucu
 
-import akka.NotUsed
 import akka.actor.ActorSystem
 import akka.stream.FlowShape
 import akka.stream.scaladsl.GraphDSL.Implicits.fanOut2flow
@@ -13,7 +12,6 @@ import ua.edu.ucu.integrations.TwitterStreamSource
 import ua.edu.ucu.stages.MongoDBSink
 import ua.edu.ucu.utils.Configuration
 
-import scala.annotation.tailrec
 import scala.concurrent.ExecutionContextExecutor
 
 object TwitterApp extends App {

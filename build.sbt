@@ -22,6 +22,7 @@ lazy val twitter = (project in file("."))
       "org.twitter4j" % "twitter4j-stream" % "4.0.5",
       "org.mongodb.scala" %% "mongo-scala-driver" % "2.9.0",
       "com.typesafe.akka" %% "akka-actor-typed" % "2.6.10",
+      "org.slf4j" % "slf4j-simple" % "1.7.12",
     ),
     name := "twitter"
   )
@@ -46,6 +47,7 @@ lazy val mainApplication = (project in file("."))
       "org.twitter4j" % "twitter4j-stream" % "4.0.5",
       "org.mongodb.scala" %% "mongo-scala-driver" % "2.9.0",
       "com.typesafe.akka" %% "akka-actor-typed" % "2.6.10",
+      "org.slf4j" % "slf4j-simple" % "1.7.12",
     ),
     name := "mainApplication"
   )
