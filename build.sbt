@@ -18,13 +18,14 @@ lazy val twitter = (project in file("."))
       "com.lightbend.akka" %% "akka-stream-alpakka-mongodb" % "2.0.2",
       "com.typesafe.akka" %% "akka-serialization-jackson" % "2.6.10",
       "com.typesafe.akka" %% "akka-http-spray-json" % "10.2.2",
-
       "org.twitter4j" % "twitter4j-core" % "4.0.5",
       "org.twitter4j" % "twitter4j-stream" % "4.0.5",
       "org.mongodb.scala" %% "mongo-scala-driver" % "2.9.0",
+      "com.typesafe.akka" %% "akka-actor-typed" % "2.6.10",
     ),
     name := "twitter"
   )
+
 
 lazy val mainApplication = (project in file("."))
   .settings(
@@ -44,9 +45,11 @@ lazy val mainApplication = (project in file("."))
       "org.twitter4j" % "twitter4j-core" % "4.0.5",
       "org.twitter4j" % "twitter4j-stream" % "4.0.5",
       "org.mongodb.scala" %% "mongo-scala-driver" % "2.9.0",
+      "com.typesafe.akka" %% "akka-actor-typed" % "2.6.10",
     ),
     name := "mainApplication"
   )
+
 
 assemblyMergeStrategy in assembly := {
   case PathList("META-INF", xs @ _*) => MergeStrategy.discard

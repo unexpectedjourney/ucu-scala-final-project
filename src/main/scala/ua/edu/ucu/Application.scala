@@ -8,6 +8,7 @@ import ua.edu.ucu.dto.YahooStockJsonProtocol._
 import ua.edu.ucu.dto.Root
 import ua.edu.ucu.integrations.StockPricesStreamSource
 import ua.edu.ucu.dto.YahooStockJsonProtocol._
+
 import scala.concurrent.{ExecutionContextExecutor, Future}
 import akka.stream.scaladsl.{Broadcast, Flow, GraphDSL, Merge, Sink, Source, Zip}
 import akka.stream.FlowShape
@@ -22,6 +23,8 @@ import akka.http.scaladsl.server.{Directives, Route}
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import akka.http.scaladsl.server.Directives._
+import ua.edu.ucu.integrations.YahooFinance.YahooFinance.lookForTickers
+
 import scala.concurrent.Future
 import scala.util.Random
 
@@ -43,7 +46,7 @@ object Application extends App {
 
 
   val dictionary = Map("GOOGL" -> "GOOGLE",
-                        "TSLA" -> "TESLA",
+                       "TSLA" -> "TESLA",
                        "MSFT" -> "MICROSOFT")
 
 
@@ -59,16 +62,9 @@ object Application extends App {
 
 
   //////////////////////////// ADD YOUR FUNCTION HERE:
-  def findNews(symbol: String):String = {
-    //val keyword = dictionary(symbol)
-    //  ...
-
-    "News 1"
-
+  def findNews(symbol: String): String = {
+    lookForTickers(symbol)
   }
-
-
-
 
 
   val graphSource = StockPricesStreamSource(Seq("GOOGL", "TSLA", "MSFT")).via(GraphDSL.create() { implicit builder =>
