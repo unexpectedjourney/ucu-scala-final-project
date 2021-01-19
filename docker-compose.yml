@@ -11,6 +11,16 @@ services:
     env_file:
       - .env
 
+  news:
+    build:
+      context: .
+      dockerfile: Dockerfile-news
+    restart: always
+    depends_on:
+      - mongo
+    env_file:
+      - .env
+
   core:
     build:
       context: .
@@ -20,11 +30,13 @@ services:
       - mongo
     env_file:
       - .env
+    ports:
+      - 8080:8080
 
   mongo:
     image: mongo:latest
     ports:
       - 27017:27017
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_ROOT_USERNAME: $MONGO_INITDB_ROOT_USERNAME
+      MONGO_INITDB_ROOT_PASSWORD: $MONGO_INITDB_ROOT_PASSWORD
