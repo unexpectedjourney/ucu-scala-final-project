@@ -28,7 +28,7 @@ object TwitterApp extends App {
     .setOAuthAccessTokenSecret(envs.twitterAuthAccessTokenSecret)
     .build()
 
-  val companies = Seq("GOOGL", "TSLA", "Tesla", "MSFT", "Microsoft")
+  val companies = Seq("GOOGLE", "TESLA", "MICROSOFT")
 
   private val graphSource = TwitterStreamSource(companies, config).via(GraphDSL.create() { implicit graphBuilder =>
       val IN = graphBuilder.add(Broadcast[Tweet](1))

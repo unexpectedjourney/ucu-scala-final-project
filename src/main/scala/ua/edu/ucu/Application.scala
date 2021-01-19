@@ -44,9 +44,8 @@ object Application extends App {
                        "MSFT" -> "MICROSOFT")
 
 
-  //////////////////////////// ADD YOUR FUNCTION HERE:
   def findTweets(symbol: String): String = {
-    lookForTweets(symbol)
+    lookForTweets(dictionary(symbol))
   }
 
   def findNews(symbol: String): String = {
