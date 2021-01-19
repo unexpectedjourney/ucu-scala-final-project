@@ -1,0 +1,9 @@
+FROM openjdk:alpine
+
+ENV FILEPATH="target/scala-2.13/news.jar"
+ENV FILE="news.jar"
+
+WORKDIR /usr/app
+ADD $FILEPATH /usr/app
+
+CMD java -XX:+PrintFlagsFinal $JAVA_OPTIONS -jar $FILE

@@ -49,14 +49,9 @@ object Application extends App {
     lookForTweets(symbol)
   }
 
-
-
-
-  //////////////////////////// ADD YOUR FUNCTION HERE:
   def findNews(symbol: String): String = {
     lookForTickers(symbol)
   }
-
 
   val graphSource = StockPricesStreamSource(Seq("GOOGL", "TSLA", "MSFT")).via(GraphDSL.create() { implicit builder =>
 
@@ -92,7 +87,9 @@ object Application extends App {
     })
 
     val getNewsIfNeededFlow = Flow[Tuple2[String, Boolean]].map(x => x._2 match {
-      case true => findNews(x._1)
+      case true => {
+        findNews(x._1)
+      }
       case false => ""
     })
 
@@ -114,7 +111,7 @@ object Application extends App {
 
 
   val serverSource: Source[Http.IncomingConnection, Future[Http.ServerBinding]] =
-    Http().newServerAt("localhost", 8080).connectionSource()
+    Http().newServerAt("0.0.0.0", 8080).connectionSource()
 
 
   serverSource.runForeach { connection => // foreach materializes the source
