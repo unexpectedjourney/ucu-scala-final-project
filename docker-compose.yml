@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile-twitter
     restart: always
     depends_on:
-      - mongodb
+      - mongo
     env_file:
       - .env
 
@@ -17,11 +17,11 @@ services:
       dockerfile: Dockerfile-core
     restart: always
     depends_on:
-      - mongodb
+      - mongo
     env_file:
       - .env
 
-  mongodb:
+  mongo:
     image: mongo:latest
     ports:
       - 27017:27017

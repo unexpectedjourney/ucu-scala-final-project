@@ -18,6 +18,7 @@ object MongoDBSink {
       .map(tw => new Document()
         .append("timestamp", tw.timestamp)
         .append("body", tw.body)
+        .append("hashtag", tw.hashtag.name)
       )
       .to(MongoSink.insertOne(collection))
   }
